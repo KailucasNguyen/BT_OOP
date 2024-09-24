@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HarvestFarm
@@ -10,51 +11,68 @@ namespace HarvestFarm
     {
         static void Main(string[] args)
         {
-            Player player = new Player("FarmerJohn", 100);
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine("Chào mừng bạn đã đến với Harvest Farm!");
+            Console.Write("Mời bạn nhập tên người chơi:");
+            string namePlayer = Console.ReadLine();
+            Player player = new Player(namePlayer, 100);
 
-            // Initialize products
             List<Product> products = new List<Product>
             {
-            new Wheat(),
-            new Tomato(),
-            new Sunflower()
+                new Wheat(),
+                new Tomato(),
+                new Sunflower()
             };
-            while (true)
+            bool troChoi = true;
+            while (troChoi)
             {
-                try
-                {
-                    // Player selects a product to seed
-                    Console.WriteLine("Choose a product to seed: 1. Wheat 2. Tomato 3. Sunflower");
-                    int choice = int.Parse(Console.ReadLine());
-                    Product selectedProduct = products[choice - 1];
-
-                    // Check if player can afford the product
-                    player.Spend(selectedProduct.Cost);
-
-                    // Seed the product
-                    selectedProduct.Seed();
-
-                    // Simulate growth time (simple console message here)
-                    Console.WriteLine($"Waiting for {selectedProduct.Duration} days to harvest...");
-
-                    // Harvest the product
-                    double profit = selectedProduct.Harvest();
-                    Console.WriteLine($"You harvested the product and earned a profit of: {profit}");
-
-                    // Player earns the profit
-                    player.Earn(profit);
-                    Console.WriteLine($"Your new reward points: {player.Reward}");
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("An error occurred: " + ex.Message);
-                }
-                Console.ReadKey();
                 Console.Clear();
+                Console.WriteLine($"Chào {namePlayer}! Số điểm của hiện tại của bạn là: {player.Reward}\n" +
+                                  $"Mời bạn chọn thao tác:");
+                Console.WriteLine("1.Gieo trồng Lúa mì.");
+                Console.WriteLine("2.Gieo trồng Cà chua.");
+                Console.WriteLine("3.Gieo trồng Hoa hướng dương.");
+                Console.WriteLine("ESC.Thoát trò chơi.");
+                Product luaMi = products[0].CreateNewInstance();
+                Product caChua = products[1].CreateNewInstance();
+                Product hoaHuongDuong = products[2].CreateNewInstance();
+
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                switch(key.Key)
+                {
+                    case ConsoleKey.D1:
+                        Console.Clear();
+                        player.Spend(luaMi.Cost);
+                        luaMi.Seed();
+                        player.Earn(luaMi.Harvest()+luaMi.Cost);
+                        //Console.WriteLine($"Số điểm hiện tại của bạn là: {player.Reward}");
+                        break;
+
+                    case ConsoleKey.D2:
+                        Console.Clear();
+                        player.Spend(caChua.Cost);
+                        caChua.Seed();
+                        player.Earn(caChua.Harvest()+caChua.Cost);
+                        break;
+
+                    case ConsoleKey.D3:
+                        Console.Clear();
+                        player.Spend(hoaHuongDuong.Cost);
+                        hoaHuongDuong.Seed();
+                        player.Earn(hoaHuongDuong.Harvest()+hoaHuongDuong.Cost);
+                        break;
+
+                    case ConsoleKey.Escape:
+                        Console.Clear();
+                        Console.Write($"Tạm biệt {namePlayer}. Hẹn gặp lại!!!");
+                        Thread.Sleep(5000);
+                        troChoi = false;
+                        break;
+
+                }
+                //Console.ReadKey();
+                //Console.Clear();
             }
         }
     }

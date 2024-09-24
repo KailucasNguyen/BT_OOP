@@ -13,36 +13,99 @@ namespace HarvestFarm
 
         public int NumFertilizer { get => numFertilizer; set => numFertilizer = value; }
         public int NumWater { get => numWater; set => numWater = value; }
-        public Sunflower()
+        public Sunflower() : base(40, 100, 10,5)
         {
-            Cost = 40;
-            Value = 100;
-            Duration = 6;
-            Fertilizer = 8;
-            Water = 4;
-            NumFertilizer = 0;
-            NumWater = 0;
-        }
-
-        public void Feed()
-        {
-            NumFertilizer++;
-        }
-
-        public void ProvideWater()
-        {
-            NumWater++;
+            NumFertilizer = 1;
+            NumWater = 1;
         }
 
         public override void Seed()
         {
-            Console.WriteLine("Sunflower has been seeded.");
+            Start = DateTime.Now;
+            Duration = Start.AddSeconds(30);
+            bool run = true;
+            while (run)
+            {
+                Console.WriteLine($"Hoa hướng dương của bạn vừa được trồng vào lúc {Start}.\n" +
+                              $"Để thu hoạch bạn cần phải bón phân {numFertilizer} lần và tưới nước {numWater} lần.\n" +
+                              $"Thời gian sinh trưởng của cây là 30 giây\t");
+                Console.WriteLine($"Mời bạn chọn thao tác:");
+                Console.WriteLine("1.Bón phân.");
+                Console.WriteLine("2.Tưới nước.");
+                Console.WriteLine("3.Thu hoạch.");
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    case ConsoleKey.D1:
+                        Feed();
+                        Console.Clear();
+                        break;
+                    case ConsoleKey.D2:
+                        ProvideWater();
+                        Console.Clear();
+                        break;
+                    case ConsoleKey.D3:
+                        try
+                        {
+                            if (numFertilizer == 0 && numWater == 0 && DateTime.Now >= Duration)
+                            {
+                                Console.WriteLine($"Bạn đã thu hoạch và thu được lợi nhuận là: {Harvest()}");
+                                Console.ReadKey();
+                                Console.Clear();
+                                run = false;
+                            }
+                            else
+                            {
+                                throw new InvalidOperationException("Chưa đủ điều kiện để thu hoạch!!!");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        break;
+                }
+            }
         }
 
         public override double Harvest()
         {
             double totalCost = Cost + (NumFertilizer * Fertilizer) + (NumWater * Water);
             return Value - totalCost;
+        }
+        public override Product CreateNewInstance()
+        {
+            return new Sunflower();
+        }
+        public void Feed()
+        {
+            numFertilizer--;
+            try
+            {
+                if (numFertilizer <= 0)
+                    throw new InvalidOperationException("Bạn đã bón phân đủ số lần rồi vui lòng không bón nữa!!!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+            }
+        }
+        public void ProvideWater()
+        {
+            numWater--;
+            try
+            {
+                if (numWater <= 0)
+                    throw new InvalidOperationException("Bạn đã tới nước đủ số lần rồi vui lòng không tưới nữa!!!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+            }
         }
     }
 }

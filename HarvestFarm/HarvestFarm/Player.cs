@@ -24,7 +24,7 @@ namespace HarvestFarm
         {
             if (amount > Reward)
             {
-                throw new InvalidOperationException("Insufficient reward points.");
+                throw new Exception("Điểm của bạn không đủ để trồng cây");
             }
             Reward -= amount;
         }
