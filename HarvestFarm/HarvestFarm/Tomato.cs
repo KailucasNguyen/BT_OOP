@@ -23,6 +23,7 @@ namespace HarvestFarm
         {
             Start = DateTime.Now;
             Duration = Start.AddSeconds(25);
+            double tienLai = Harvest();
             bool run = true;
             while (run)
             {
@@ -49,7 +50,7 @@ namespace HarvestFarm
                         {
                             if (numFertilizer == 0 && numWater == 0 && DateTime.Now >= Duration)
                             {
-                                Console.WriteLine($"Bạn đã thu hoạch và thu được lợi nhuận là: {Harvest()}");
+                                Console.WriteLine($"Bạn đã thu hoạch và thu được lợi nhuận là: {tienLai}");
                                 Console.ReadKey();
                                 Console.Clear();
                                 run = false;

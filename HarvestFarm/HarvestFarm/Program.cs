@@ -44,23 +44,26 @@ namespace HarvestFarm
                     case ConsoleKey.D1:
                         Console.Clear();
                         player.Spend(luaMi.Cost);
+                        double tienLai = luaMi.Harvest();
                         luaMi.Seed();
-                        player.Earn(luaMi.Harvest()+luaMi.Cost);
+                        player.Earn(tienLai+luaMi.Cost);
                         //Console.WriteLine($"Số điểm hiện tại của bạn là: {player.Reward}");
                         break;
 
                     case ConsoleKey.D2:
                         Console.Clear();
                         player.Spend(caChua.Cost);
+                        double tienLai1 = caChua.Harvest();
                         caChua.Seed();
-                        player.Earn(caChua.Harvest()+caChua.Cost);
+                        player.Earn(tienLai1+caChua.Cost);
                         break;
 
                     case ConsoleKey.D3:
                         Console.Clear();
                         player.Spend(hoaHuongDuong.Cost);
+                        double tienLai2 = hoaHuongDuong.Harvest();
                         hoaHuongDuong.Seed();
-                        player.Earn(hoaHuongDuong.Harvest()+hoaHuongDuong.Cost);
+                        player.Earn(tienLai2+hoaHuongDuong.Cost);
                         break;
 
                     case ConsoleKey.Escape:
@@ -71,8 +74,6 @@ namespace HarvestFarm
                         break;
 
                 }
-                //Console.ReadKey();
-                //Console.Clear();
             }
         }
     }
