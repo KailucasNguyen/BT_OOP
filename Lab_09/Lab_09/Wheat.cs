@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace Lab_09
@@ -23,7 +25,7 @@ namespace Lab_09
         public override void Seed()
         {
             Start = DateTime.Now;
-            Duration = Start.AddSeconds(30);
+            Duration = Start.AddSeconds(10);
             double tienLai = Harvest();
             bool run = true;
             while (run)

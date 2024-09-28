@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace Lab_09
 {
+    [Serializable]
     public class Player
     {
         private string userName;
         private double reward;
-
+        
         public string UserName { get => userName; set => userName = value; }
+        
         public double Reward { get => reward; set => reward = value; }
 
         public Player(string userName, double initialReward)

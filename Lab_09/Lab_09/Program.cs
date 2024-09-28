@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.IO;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace Lab_09
@@ -13,9 +15,21 @@ namespace Lab_09
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine("Chào mừng bạn đã đến với Harvest Farm!");
-            Console.Write("Mời bạn nhập tên người chơi:");
-            string namePlayer = Console.ReadLine();
-            Player player = new Player(namePlayer, 100);
+            Player player;
+            //string namePlayer;
+            if (System.IO.File.Exists("playerData.bin"))
+            {
+                player = SaveSystem.LoadBinaryData("playerData.bin");
+                Console.WriteLine($"Tải thành công người chơi: {player.UserName} với {player.Reward} điểm.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Write("Mời bạn nhập tên người chơi:");
+                //namePlayer = Console.ReadLine();
+                //player = new Player(namePlayer, 100);
+                player = new Player("Minh Khoa", 100);
+            }
 
             List<Product> products = new List<Product>
             {
@@ -27,7 +41,7 @@ namespace Lab_09
             while (troChoi)
             {
                 Console.Clear();
-                Console.WriteLine($"Chào {namePlayer}! Số điểm của hiện tại của bạn là: {player.Reward}\n" +
+                Console.WriteLine($"Chào {player.UserName}! Số điểm của hiện tại của bạn là: {player.Reward}\n" +
                                   $"Mời bạn chọn thao tác:");
                 Console.WriteLine("1.Gieo trồng Lúa mì.");
                 Console.WriteLine("2.Gieo trồng Cà chua.");
@@ -68,8 +82,9 @@ namespace Lab_09
 
                     case ConsoleKey.Escape:
                         Console.Clear();
-                        Console.Write($"Tạm biệt {namePlayer}. Hẹn gặp lại!!!");
+                        Console.Write($"Tạm biệt {player.UserName}. Hẹn gặp lại!!!");
                         Thread.Sleep(5000);
+                        SaveSystem.SaveBinaryData(player, "playerData.bin");
                         troChoi = false;
                         break;
                 }
