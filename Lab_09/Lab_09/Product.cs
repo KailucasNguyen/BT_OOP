@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Lab_09
 {
-    public abstract class Product
+    [Serializable]
+    [DataContract]
+    public abstract class Product:ISerializable
     {
         private double cost;
         private double value;
@@ -35,5 +37,19 @@ namespace Lab_09
         public abstract void Seed();
         public abstract double Harvest();
         public abstract Product CreateNewInstance();
+        public Product(SerializationInfo info, StreamingContext context)
+        {
+            Cost = info.GetDouble("cost");
+            Value = info.GetDouble("v");
+            Fertilizer = info.GetDouble("f");
+            Water = info.GetDouble("w");
+        }
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("cost", cost);
+            info.AddValue("v",value);
+            info.AddValue("f",fertilizer);
+            info.AddValue("w",water);
+        }
     }
 }

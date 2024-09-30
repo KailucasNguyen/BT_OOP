@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
+using System.Text.Json;
+using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
@@ -15,11 +17,12 @@ namespace Lab_09
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine("Chào mừng bạn đã đến với Harvest Farm!");
+            PlayerList playerList;
             Player player;
             //string namePlayer;
-            if (System.IO.File.Exists("playerData.bin"))
+            if (File.Exists("data.dat"))
             {
-                player = SaveSystem.LoadBinaryData("playerData.bin");
+                player = Player.LoadBinaryData("data.dat");
                 Console.WriteLine($"Tải thành công người chơi: {player.UserName} với {player.Reward} điểm.");
                 Console.ReadKey();
             }
@@ -28,7 +31,9 @@ namespace Lab_09
                 Console.Write("Mời bạn nhập tên người chơi:");
                 //namePlayer = Console.ReadLine();
                 //player = new Player(namePlayer, 100);
-                player = new Player("Minh Khoa", 100);
+                player = new Player { UserName = "Minh Khoa", Reward = 100 };
+                playerList = new PlayerList();
+                playerList.Add(player);
             }
 
             List<Product> products = new List<Product>
@@ -84,7 +89,7 @@ namespace Lab_09
                         Console.Clear();
                         Console.Write($"Tạm biệt {player.UserName}. Hẹn gặp lại!!!");
                         Thread.Sleep(5000);
-                        SaveSystem.SaveBinaryData(player, "playerData.bin");
+                        Player.SaveBinaryData(player, "data.dat");
                         troChoi = false;
                         break;
                 }

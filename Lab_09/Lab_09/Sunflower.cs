@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Lab_09
 {
+    [Serializable]
+    [DataContract]
     public class Sunflower : Product
     {
         private int numFertilizer;
